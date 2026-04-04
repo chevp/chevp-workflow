@@ -32,6 +32,14 @@ Guidelines in this folder are **framework rules** shipped with the repo — publ
 
 Claude's personal memory (`~/.claude/.../memory/`) is a separate, per-user store. Users may mirror individual guidelines into their own memory if they want Claude to apply them across all projects, not just under chevp-workflow. The two systems use similar syntax on purpose, but they are not auto-synchronised.
 
+## Shared with other frameworks
+
+This format is **canonical** here and is adopted verbatim by:
+
+- [chevp-ai-framework/guidelines/](https://github.com/chevp/chevp-ai-framework/tree/main/guidelines) — per-repo lifecycle guidelines use the same frontmatter + Rule/Why/How-to-apply structure.
+
+When updating the format, update this folder first, then propagate to downstream adopters via a workspace plan.
+
 ## Current guidelines
 
 | File | Rule |
