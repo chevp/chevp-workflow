@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chevp-workflow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            meta: {
+              50:  '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+    .diagonal-stripes {
+      background-image: repeating-linear-gradient(
+        45deg, transparent, transparent 10px,
+        rgba(255, 255, 255, 0.02) 10px, rgba(255, 255, 255, 0.02) 20px
+      );
+    }
+
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #6d28d9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hover-glow { transition: all 0.3s ease; }
+    .hover-glow:hover {
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .card {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(109, 40, 217, 0.1));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .card:hover::before { opacity: 1; }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(139, 92, 246, 0.5);
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+    ::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.3); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(139, 92, 246, 0.5); }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen grid-bg">
+
+  <!-- Header -->
+  <header class="h-16 glass border-b border-slate-700/50 flex items-center justify-between px-6 diagonal-stripes sticky top-0 z-50">
+    <div class="flex items-center gap-4">
+      <span class="material-symbols-outlined text-meta-400 text-3xl">hub</span>
+      <h1 class="text-xl font-bold gradient-text">chevp-workflow</h1>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="#lifecycle" class="text-slate-400 hover:text-slate-200 transition-colors text-sm">Lifecycle</a>
+      <a href="#roles" class="text-slate-400 hover:text-slate-200 transition-colors text-sm">Roles</a>
+      <a href="#layering" class="text-slate-400 hover:text-slate-200 transition-colors text-sm">Layering</a>
+      <a href="#quickstart" class="text-slate-400 hover:text-slate-200 transition-colors text-sm">Quick Start</a>
+      <a href="https://github.com/chevp/chevp-workflow" target="_blank" class="text-slate-400 hover:text-slate-200 transition-colors">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="max-w-4xl mx-auto px-6 pt-20 pb-16 text-center">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+      <span class="gradient-text">A workspace-level meta-lifecycle for<br>cross-repository AI-assisted development</span>
+    </h2>
+    <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-3">
+      One feature often touches many repos. When that happens, single-repo processes break down.<br>
+      This framework owns the space <em>above</em> the single repo: impact, coordination, orchestration.
+    </p>
+    <p class="text-slate-600 text-sm">MIT License &middot; Orchestration-driven &middot; Cross-platform (Windows, macOS, Linux)</p>
+  </section>
+
+  <!-- Why a separate layer -->
+  <section class="max-w-4xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-bold text-center mb-2 gradient-text">Why a separate layer?</h2>
+    <p class="text-slate-500 text-center text-sm mb-8">chevp-ai-framework breaks down at the workspace boundary &mdash; this fills the gap</p>
+
+    <div class="glass rounded-xl p-5 max-w-3xl mx-auto overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-700/50">
+            <th class="text-left py-2 px-3 text-slate-300 font-semibold">Concern</th>
+            <th class="text-center py-2 px-3 text-slate-400 font-medium">Per-Repo<br><span class="text-xs text-slate-500">chevp-ai-framework</span></th>
+            <th class="text-center py-2 px-3 text-meta-300 font-medium">Workspace<br><span class="text-xs text-slate-500">chevp-workflow</span></th>
+          </tr>
+        </thead>
+        <tbody class="text-slate-400">
+          <tr class="border-b border-slate-800/50"><td class="py-2 px-3">One repo, one lifecycle (G1/G2/G3)</td><td class="text-center text-green-400">&check;</td><td class="text-center text-slate-600">&mdash;</td></tr>
+          <tr class="border-b border-slate-800/50"><td class="py-2 px-3">Which repos does this feature touch?</td><td class="text-center text-slate-600">&mdash;</td><td class="text-center text-green-400">&check;</td></tr>
+          <tr class="border-b border-slate-800/50"><td class="py-2 px-3">Cross-repo commit sequencing</td><td class="text-center text-slate-600">&mdash;</td><td class="text-center text-green-400">&check;</td></tr>
+          <tr class="border-b border-slate-800/50"><td class="py-2 px-3">Orchestrated push / PR chaining</td><td class="text-center text-slate-600">&mdash;</td><td class="text-center text-green-400">&check;</td></tr>
+          <tr class="border-b border-slate-800/50"><td class="py-2 px-3">Primary-owner rule per plan</td><td class="text-center text-slate-600">&mdash;</td><td class="text-center text-green-400">&check;</td></tr>
+          <tr><td class="py-2 px-3">Release trains across repos</td><td class="text-center text-slate-600">&mdash;</td><td class="text-center text-green-400">&check;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Lifecycle -->
+  <section id="lifecycle" class="max-w-4xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-bold text-center mb-2 gradient-text">Lifecycle</h2>
+    <p class="text-slate-500 text-center text-sm mb-8">3 steps, 4 quality gates (G0&ndash;G3), human approval at every transition</p>
+
+    <!-- Steps Table -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-violet-500/20 text-violet-400 text-sm font-bold">1</span>
+            <h3 class="font-semibold text-slate-100">Discover</h3>
+          </div>
+          <p class="text-slate-400 text-sm mb-3">Identify affected repos, build the impact map, assign primary owner</p>
+          <p class="text-slate-500 text-xs"><strong class="text-slate-400">Output:</strong> Impact map, primary-owner assignment, confirmed scope</p>
+        </div>
+      </div>
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-fuchsia-500/20 text-fuchsia-400 text-sm font-bold">2</span>
+            <h3 class="font-semibold text-slate-100">Coordinate</h3>
+          </div>
+          <p class="text-slate-400 text-sm mb-3">Write the workspace plan, sequence commits, record cross-repo decisions</p>
+          <p class="text-slate-500 text-xs"><strong class="text-slate-400">Output:</strong> Workspace plan, commit sequence, cross-repo ADR, stubs</p>
+        </div>
+      </div>
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 text-sm font-bold">3</span>
+            <h3 class="font-semibold text-slate-100">Execute</h3>
+          </div>
+          <p class="text-slate-400 text-sm mb-3">Orchestrated commits, pushes, PRs across all affected repos</p>
+          <p class="text-slate-500 text-xs"><strong class="text-slate-400">Output:</strong> Committed repos, orchestrated pushes, linked PRs, verified state</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quality Gates -->
+    <div>
+      <h3 class="text-lg font-semibold text-center mb-4 text-slate-200">Quality Gates</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass rounded-lg p-4 text-center hover-glow">
+          <span class="text-meta-400 font-bold text-lg">G0</span>
+          <p class="text-slate-500 text-xs mt-1">Entry &rarr; Discover</p>
+          <p class="text-slate-400 text-xs mt-2">Workspace mode confirmed &mdash; &gt;1 repo touched</p>
+        </div>
+        <div class="glass rounded-lg p-4 text-center hover-glow">
+          <span class="text-violet-400 font-bold text-lg">G1</span>
+          <p class="text-slate-500 text-xs mt-1">Discover &rarr; Coordinate</p>
+          <p class="text-slate-400 text-xs mt-2">Impact map complete, primary owner assigned</p>
+        </div>
+        <div class="glass rounded-lg p-4 text-center hover-glow">
+          <span class="text-fuchsia-400 font-bold text-lg">G2</span>
+          <p class="text-slate-500 text-xs mt-1">Coordinate &rarr; Execute</p>
+          <p class="text-slate-400 text-xs mt-2">Workspace plan approved, commit sequence locked</p>
+        </div>
+        <div class="glass rounded-lg p-4 text-center hover-glow">
+          <span class="text-emerald-400 font-bold text-lg">G3</span>
+          <p class="text-slate-500 text-xs mt-1">Execute &rarr; Done</p>
+          <p class="text-slate-400 text-xs mt-2">All repos committed/pushed/verified</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roles -->
+  <section id="roles" class="max-w-4xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-bold text-center mb-2 gradient-text">Roles</h2>
+    <p class="text-slate-500 text-center text-sm mb-8">Six workspace-level roles operate within each step</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-meta-400 text-2xl mb-2 block">account_tree</span>
+          <h3 class="font-semibold text-slate-100 text-sm mb-1">Workspace-SDLC</h3>
+          <p class="text-slate-500 text-xs">Workspace process governance, G0&ndash;G3 gates, step transitions</p>
+        </div>
+      </div>
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-meta-400 text-2xl mb-2 block">hub</span>
+          <h3 class="font-semibold text-slate-100 text-sm mb-1">Impact-Mapping</h3>
+          <p class="text-slate-500 text-xs">Which repos, which files, which dependencies between repos</p>
+        </div>
+      </div>
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-meta-400 text-2xl mb-2 block">dashboard_customize</span>
+          <h3 class="font-semibold text-slate-100 text-sm mb-1">Cross-Repo-Planning</h3>
+          <p class="text-slate-500 text-xs">Workspace plan, commit sequence, primary-owner rule</p>
+        </div>
+      </div>
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-meta-400 text-2xl mb-2 block">commit</span>
+          <h3 class="font-semibold text-slate-100 text-sm mb-1">Commit-Orchestration</h3>
+          <p class="text-slate-500 text-xs">Atomic commit sets, push order, PR chaining, cross-refs</p>
+        </div>
+      </div>
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-meta-400 text-2xl mb-2 block">badge</span>
+          <h3 class="font-semibold text-slate-100 text-sm mb-1">Repo-Ownership</h3>
+          <p class="text-slate-500 text-xs">Single owner per plan, reference stubs in secondary repos</p>
+        </div>
+      </div>
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-meta-400 text-2xl mb-2 block">hub_outlined</span>
+          <h3 class="font-semibold text-slate-100 text-sm mb-1">Workspace-Context</h3>
+          <p class="text-slate-500 text-xs">Root CLAUDE.md, when to load workspace vs. per-repo</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Layering -->
+  <section id="layering" class="max-w-4xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-bold text-center mb-2 gradient-text">Framework Layering</h2>
+    <p class="text-slate-500 text-center text-sm mb-8">chevp-workflow sits above chevp-ai-framework and delegates per-repo work down</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-meta-400 text-2xl mb-2 block">hub</span>
+          <h3 class="font-semibold text-slate-100 text-sm mb-2">chevp-workflow <span class="text-meta-300 text-xs font-normal">(this repo)</span></h3>
+          <p class="text-slate-500 text-xs mb-2">Workspace meta-lifecycle for features touching &gt;1 repo. Discover &rarr; Coordinate &rarr; Execute.</p>
+          <p class="text-slate-500 text-xs">Owns: impact maps, commit sequencing, orchestration, primary-owner rule.</p>
+        </div>
+      </div>
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-meta-400 text-2xl mb-2 block">foundation</span>
+          <h3 class="font-semibold text-slate-100 text-sm mb-2">chevp-ai-framework</h3>
+          <p class="text-slate-500 text-xs mb-2">Per-repo lifecycle. Context &rarr; Exploration &rarr; Production.</p>
+          <p class="text-slate-500 text-xs">Owns: single-repo context, plans, ADRs, production code.</p>
+        </div>
+      </div>
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-meta-400 text-2xl mb-2 block">extension</span>
+          <h3 class="font-semibold text-slate-100 text-sm mb-2">domain-ai-framework</h3>
+          <p class="text-slate-500 text-xs">Optional domain-specific layer adding specialised rules and templates.</p>
+        </div>
+      </div>
+      <div class="card glass rounded-xl p-5">
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-meta-400 text-2xl mb-2 block">rocket_launch</span>
+          <h3 class="font-semibold text-slate-100 text-sm mb-2">Project Frameworks</h3>
+          <p class="text-slate-500 text-xs">Concrete project frameworks (e.g. nuna-ai-framework) built on top.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 glass rounded-xl p-5 max-w-3xl mx-auto">
+      <p class="text-slate-400 text-sm mb-2"><strong class="text-slate-200">Delegation contract:</strong></p>
+      <pre class="bg-black/30 rounded-lg p-4 text-xs overflow-x-auto"><code class="text-slate-300">Workspace Plan (in primary-owner repo)
+    │
+    ├── Work Item A (repo X) ──▶ chevp-ai-framework: Context → Exploration → Production
+    ├── Work Item B (repo Y) ──▶ chevp-ai-framework: Context → Exploration → Production
+    └── Work Item C (repo Z) ──▶ chevp-ai-framework: Context → Exploration → Production</code></pre>
+      <p class="text-slate-500 text-xs mt-3">Workspace G3 passes only when every per-repo G3 has passed.</p>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="max-w-4xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-bold text-center mb-2 gradient-text">Principles</h2>
+    <p class="text-slate-500 text-center text-sm mb-8">The rules that keep cross-repo work under control</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+      <div class="glass rounded-xl p-5 hover-glow">
+        <h3 class="font-semibold text-slate-100 text-sm mb-2">Read is trivial</h3>
+        <p class="text-slate-500 text-xs">Workspace framework never loads for read-only intent</p>
+      </div>
+      <div class="glass rounded-xl p-5 hover-glow">
+        <h3 class="font-semibold text-slate-100 text-sm mb-2">Write needs a plan</h3>
+        <p class="text-slate-500 text-xs">Any cross-repo write requires a workspace plan first</p>
+      </div>
+      <div class="glass rounded-xl p-5 hover-glow">
+        <h3 class="font-semibold text-slate-100 text-sm mb-2">One owner per plan</h3>
+        <p class="text-slate-500 text-xs">Every workspace plan lives in exactly one primary repo</p>
+      </div>
+      <div class="glass rounded-xl p-5 hover-glow">
+        <h3 class="font-semibold text-slate-100 text-sm mb-2">Stubs, not duplicates</h3>
+        <p class="text-slate-500 text-xs">Secondary repos reference the owner plan, never copy it</p>
+      </div>
+      <div class="glass rounded-xl p-5 hover-glow">
+        <h3 class="font-semibold text-slate-100 text-sm mb-2">Cross-platform</h3>
+        <p class="text-slate-500 text-xs">All paths and commands work on Windows, macOS, and Linux</p>
+      </div>
+      <div class="glass rounded-xl p-5 hover-glow">
+        <h3 class="font-semibold text-slate-100 text-sm mb-2">Delegates down, never up</h3>
+        <p class="text-slate-500 text-xs">Per-repo work delegates to chevp-ai-framework</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Start -->
+  <section id="quickstart" class="max-w-4xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-bold text-center mb-2 gradient-text">Quick Start</h2>
+    <p class="text-slate-500 text-center text-sm mb-8">Add this to your <strong>workspace root</strong> CLAUDE.md &mdash; that's it</p>
+
+    <div class="max-w-2xl mx-auto space-y-4">
+      <div class="glass rounded-xl p-5">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-meta-600/20 text-meta-400 text-xs font-bold">1</span>
+          <h3 class="font-semibold text-slate-100 text-sm">Add this block to your workspace root CLAUDE.md</h3>
+        </div>
+        <pre class="bg-black/30 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-slate-300">## Workspace Mode &mdash; when to load chevp-workflow
+
+This directory is a multi-repo workspace (not a single project).
+
+Read / explain / ask &rarr; stay in the sub-repo's CLAUDE.md.
+Do NOT load chevp-workflow.
+
+Any action that writes to &gt;1 repo (edit, commit, push, PR, release)
+&rarr; load the chevp-workflow index BEFORE the first write:
+
+    @url https://chevp.github.io/chevp-workflow/index.md
+
+Then follow links to the files you actually need &mdash; no bundle.</code></pre>
+      </div>
+
+      <div class="glass rounded-xl p-5">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-meta-600/20 text-meta-400 text-xs font-bold">2</span>
+          <h3 class="font-semibold text-slate-100 text-sm">Done</h3>
+        </div>
+        <p class="text-slate-400 text-sm">Claude loads the index via <code class="text-meta-400">@url</code>, then follows links to <code class="text-meta-400">CLAUDE.md</code>, step READMEs, templates, and guidelines on demand. Single-repo work continues to use <code class="text-meta-400">chevp-ai-framework</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Repository Structure -->
+  <section class="max-w-4xl mx-auto px-6 py-12">
+    <h2 class="text-2xl font-bold text-center mb-2 gradient-text">Repository Structure</h2>
+    <p class="text-slate-500 text-center text-sm mb-8">Linked from <code class="text-meta-400">index.md</code>, loaded on demand &mdash; no compiled bundle</p>
+
+    <div class="glass rounded-xl p-5 max-w-2xl mx-auto">
+      <pre class="bg-black/30 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-slate-300">index.md          <span class="text-slate-500"># Entry point &mdash; links to every file</span>
+01-discover/      <span class="text-slate-500"># Step 1 &mdash; Impact map, primary owner</span>
+02-coordinate/    <span class="text-slate-500"># Step 2 &mdash; Workspace plan, commit sequence</span>
+03-execute/       <span class="text-slate-500"># Step 3 &mdash; Orchestrated commits, pushes, PRs</span>
+templates/        <span class="text-slate-500"># Plan, impact-map, ADR, multi-commit, stub</span>
+guidelines/       <span class="text-slate-500"># Trivial-read, primary-owner, cross-platform</span>
+integration/      <span class="text-slate-500"># Root CLAUDE.md snippet, composition</span></code></pre>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-700/50 py-8 px-6 text-center text-xs diagonal-stripes">
+    <nav class="flex items-center justify-center gap-4">
+      <span class="text-slate-500">&copy; 2026 Patrice Chevillat</span>
+      <a href="https://chevp.github.io/site-policy/terms.html" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300 transition-colors">Terms</a>
+      <a href="https://chevp.github.io/site-policy/privacy.html" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300 transition-colors">Privacy</a>
+      <a href="https://chevp.github.io/site-policy/impressum.html" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300 transition-colors">Impressum</a>
+      <a href="https://chevp.github.io/site-policy/contact.html" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300 transition-colors">Contact</a>
+    </nav>
+  </footer>
+
+</body>
+</html>
