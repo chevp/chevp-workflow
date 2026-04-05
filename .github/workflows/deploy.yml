@@ -1,45 +1,43 @@
-name: Deploy to GitHub Pages
+name: Deploy Workflow to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./
-          destination: ./_site
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-
   deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare pages content
+        run: |
+          mkdir -p _site
+          cp docs/index.html _site/index.html
+          cp index.md _site/index.md
+          cp README.md _site/README.md
+          cp LIFECYCLE.md _site/LIFECYCLE.md
+          cp -r docs _site/docs 2>/dev/null || true
+          cp -r guidelines _site/guidelines 2>/dev/null || true
+          cp -r templates _site/templates 2>/dev/null || true
+          cp -r integration _site/integration 2>/dev/null || true
+          cp -r 01-discover _site/01-discover 2>/dev/null || true
+          cp -r 02-coordinate _site/02-coordinate 2>/dev/null || true
+          cp -r 03-execute _site/03-execute 2>/dev/null || true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
