@@ -5,6 +5,8 @@
 > One feature often touches many repos. When that happens, single-repo processes break down.
 > This framework owns the space *above* the single repo: impact, coordination, orchestration.
 
+![chevp-workflow — workspace orchestration across multiple repositories](docs/Workflow-Diagram%20mit%20Repository-Karten.png)
+
 ---
 
 ## Why a separate layer?

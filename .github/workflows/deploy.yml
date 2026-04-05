@@ -22,6 +22,7 @@ jobs:
         run: |
           mkdir -p _site
           cp docs/index.html _site/index.html
+          cp docs/*.png _site/ 2>/dev/null || true
           cp index.md _site/index.md
           cp README.md _site/README.md
           cp LIFECYCLE.md _site/LIFECYCLE.md
