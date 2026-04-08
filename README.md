@@ -154,8 +154,6 @@ domain-ai-framework      ← domain-specific layer (optional)
 project frameworks       ← e.g. nuna-ai-framework
 ```
 
-Tooling (repo cloning, status, pull) stays in [chevp-setup](https://github.com/chevp/chevp-setup).
-
 ---
 
 ## License
